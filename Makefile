@@ -41,4 +41,4 @@ static:  # Check static types
 	uv run pyright
 
 unit:  # Run unit tests, eg: make unit ARGS='tests/unit/test_deploy.py'
-	uv run pytest tests/unit -vv --cov=jubilant $(ARGS)
+	uv run pytest tests/unit --cov=jubilant $(ARGS)

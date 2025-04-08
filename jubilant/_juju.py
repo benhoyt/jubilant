@@ -688,6 +688,9 @@ class Juju:
                 diff = _status_diff(prev_status, status)
                 if diff:
                     logger.info('wait: status changed:\n%s', diff)
+                else:
+                    diff = _status_diff_all(prev_status, status)
+                    logger.info('wait: status changed TODO:\n%s', diff)
 
             if error is not None and error(status):
                 raise WaitError(f'error function {error.__qualname__} returned false\n{status}')
@@ -734,6 +737,13 @@ def _status_diff(old: Status | None, new: Status) -> str:
     else:
         old_lines = [line for line in _pretty.gron(old) if _status_line_ok(line)]
     new_lines = [line for line in _pretty.gron(new) if _status_line_ok(line)]
+    return '\n'.join(_pretty.diff(old_lines, new_lines))
+
+
+def _status_diff_all(old: Status | None, new: Status) -> str:
+    """Return a line-based diff of two status objects."""
+    old_lines = [line for line in _pretty.gron(old)] if old is not None else []
+    new_lines = [line for line in _pretty.gron(new)]
     return '\n'.join(_pretty.diff(old_lines, new_lines))
 
 
